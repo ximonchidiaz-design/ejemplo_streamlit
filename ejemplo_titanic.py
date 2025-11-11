@@ -45,6 +45,7 @@ ax[1].set_title('Distribución de hombres y mujeres')
 
 # Desplegamos el gráfico
 st.pyplot(fig)
+
 if set(["Sex", "Survived"]).issubset(df.columns):
     sobrevivientes_por_sexo = df.groupby("Sex")["Survived"].sum()
     sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(index={"female": "Mujer", "male": "Hombre"})
@@ -55,6 +56,8 @@ if set(["Sex", "Survived"]).issubset(df.columns):
 
     plt.tight_layout()
     plt.show()
+else
+   print("hacer bien")
 st.write("""
 ## Muestra de datos cargados
 """)
