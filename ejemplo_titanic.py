@@ -56,21 +56,16 @@ st.title("Análisis de supervivencia del Titanic por género")
 
 archivo = st.file_uploader("database_titanic.csv", type=["csv"])
 
-if archivo is not None:
-    df = pd.read_csv(archivo)
+df = pd.read_csv("data/titanic.csv")
 
-    if set(["Sex", "Survived"]).issubset(df.columns):
+if set(["Sex", "Survived"]).issubset(df.columns):
 
-        sobrevivientes_por_sexo = df.groupby("Sex")["Survived"].sum()
-        sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(
-            index={"female": "Mujer", "male": "Hombre"}
-        )
+    st.write("### Histograma de sobrevivientes (bins = 1)")
 
-        st.write("### Número de sobrevivientes por género")
+    plt.figure(figsize=(6,4))
+    plt.hist(df["Survived"], bins=1)
+    plt.xlabel("Sobrevivió (0 = No, 1 = Sí)")
+    plt.ylabel("Frecuencia")
+    plt.title("Histograma con 1 bin")
 
-        plt.figure(figsize=(6,4))
-        sobrevivientes_por_sexo.plot(kind="bar")
-        plt.ylabel("Sobrevivientes")
-        plt.title("Número de sobrevivientes por género")
-
-        st.pyplot(plt)
+    st.pyplot(plt)
