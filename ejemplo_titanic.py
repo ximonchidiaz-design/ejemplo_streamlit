@@ -52,13 +52,23 @@ st.write("""
 # Graficamos una tabla
 st.table(df.head())
 
-if set(["Sex", "Survived"]).issubset(df.columns):
-    sobrevivientes_por_sexo = df.groupby("Sex")["Survived"].sum()
-    sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(index={"female": "Mujer", "male": "Hombre"})
+st.title("Análisis de supervivencia del Titanic por género")
 
-    fig, ax = sobrevivientes_por_sexo.plot(kind="bar")
-    ax.set_ylabel("sobrevivientes")
-    ax.set_title("Número de sobrevivientes por género")
+archivo = st.file_uploader("database_titanic.csv", type=["csv"])
 
-    plt.tight_layout()
-    st.pyplot(fig)
+if archivo is not None:
+    df = pd.read_csv(archivo)
+
+    if set(["Sex", "Survived"]).issubset(df.columns):
+
+        sobrevivientes_por_sexo = df.groupby("Sex")["Survived"].sum()
+        sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(index={"female": "Mujer", "male": "Hombre"})
+
+        fig, ax = plt.subplots()
+        sobrevivientes_por_sexo.plot(kind="bar", ax=ax)
+
+        ax.set_ylabel("Sobrevivientes")
+        ax.set_title("Número de sobrevivientes por género")
+        plt.tight_layout()
+
+        st.pyplot(fig)
