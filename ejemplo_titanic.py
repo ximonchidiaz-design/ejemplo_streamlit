@@ -62,13 +62,15 @@ if archivo is not None:
     if set(["Sex", "Survived"]).issubset(df.columns):
 
         sobrevivientes_por_sexo = df.groupby("Sex")["Survived"].sum()
-        sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(index={"female": "Mujer", "male": "Hombre"})
+        sobrevivientes_por_sexo = sobrevivientes_por_sexo.rename(
+            index={"female": "Mujer", "male": "Hombre"}
+        )
 
-        fig, ax = plt.subplots()
-        sobrevivientes_por_sexo.plot(kind="bar", ax=ax)
+        st.write("### Número de sobrevivientes por género")
 
-        ax.set_ylabel("Sobrevivientes")
-        ax.set_title("Número de sobrevivientes por género")
-        plt.tight_layout()
+        plt.figure(figsize=(6,4))
+        sobrevivientes_por_sexo.plot(kind="bar")
+        plt.ylabel("Sobrevivientes")
+        plt.title("Número de sobrevivientes por género")
 
-        st.pyplot(fig)
+        st.pyplot(plt)
