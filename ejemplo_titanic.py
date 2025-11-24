@@ -56,8 +56,7 @@ if set(["Sex", "Survived"]).issubset(df.columns):
 
     plt.tight_layout()
     plt.show()
-else:
-    print("hacer bien")
+
 st.write("""
 ## Muestra de datos cargados
 """)
