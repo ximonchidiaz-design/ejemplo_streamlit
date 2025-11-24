@@ -51,62 +51,38 @@ st.write("""
 """)
 st.table(df.head())
 
-st.title("🚢 Supervivientes del Titanic por Género")
+st.title("🚢 Supervivientes del Titanic por Género (Simple)")
 st.markdown("---")
 
 # Cargar los datos
-# Nota: Asumimos que el archivo 'database_titanic.csv' está en el mismo directorio.
 try:
     df = pd.read_csv('database_titanic.csv')
 except FileNotFoundError:
     st.error("Error: El archivo 'database_titanic.csv' no fue encontrado.")
     st.stop()
 
-# --- Preprocesamiento y Cálculo ---
+# --- Cálculo de Supervivientes por Género ---
 
-# 1. Filtrar solo a los sobrevivientes (Survived = 1)
-survivors_df = df[df['Survived'] == 1]
+# 1. Filtra las filas donde 'Survived' es 1 y agrupa por 'Sex', contando las ocurrencias.
+survival_counts = (
+    df[df['Survived'] == 1]
+    ['Sex']
+    .value_counts()
+    .reset_index(name='Count')
+)
+survival_counts.columns = ['Género', 'Cantidad']
 
-# 2. Contar la cantidad de sobrevivientes por género ('Sex')
-# Esto nos da una Series de Pandas con el conteo de 'female' y 'male'.
-survival_counts = survivors_df['Sex'].value_counts().reset_index()
-survival_counts.columns = ['Gender', 'Count']
+# --- Mostrar Resultados en Streamlit ---
 
-# --- Creación del Gráfico (Usando Altair, ya que es la librería recomendada por Streamlit) ---
-
-# El número de "bins" o categorías para este gráfico de barras es 2 (hombres y mujeres),
-# lo cual es inherentemente el mínimo necesario para mostrar estos datos discretos.
-# Altair/Streamlit manejan automáticamente esto sin una configuración explícita de "bins=1".
-
-chart = alt.Chart(survival_counts).mark_bar().encode(
-    # Eje X: Género (Variable Nominal)
-    x=alt.X('Gender', axis=alt.Axis(title='Género')),
-    
-    # Eje Y: Cantidad de Sobrevivientes
-    y=alt.Y('Count', axis=alt.Axis(title='Cantidad de Sobrevivientes')),
-    
-    # Color de las barras según el Género
-    color=alt.Color('Gender', scale=alt.Scale(domain=['female', 'male'], 
-                                              range=['#FF69B4', '#1E90FF']),
-                    legend=alt.Legend(title="Género")),
-    
-    # Tooltip para mostrar los valores al pasar el ratón
-    tooltip=['Gender', 'Count']
-).properties(
-    title='Cantidad de Sobrevivientes Hombres y Mujeres'
-).interactive() # Permite hacer zoom y pan
-
-# 3. Mostrar el Dataframe de los resultados
 st.header("🔢 Conteo de Sobrevivientes")
-st.dataframe(survival_counts)
+st.dataframe(survival_counts, hide_index=True)
 
-# 4. Mostrar el gráfico en Streamlit
-st.header("📈 Gráfico de Supervivencia")
-st.altair_chart(chart, use_container_width=True)
-
-# 5. Información adicional
-st.markdown("""
-***
-* **Hombres sobrevivientes:** El género **male** (masculino).
-* **Mujeres sobrevivientes:** El género **female** (femenino).
-""")
+st.header("📈 Gráfico de Barras")
+# Streamlit usa su función integrada bar_chart, que acepta el DataFrame
+# directamente y es más simple que configurar Altair.
+st.bar_chart(
+    survival_counts,
+    x='Género',
+    y='Cantidad',
+    color='#FF69B4' # Un color fijo para simplificar
+)
