@@ -61,4 +61,3 @@ if set(["Sex", "Survived"]).issubset(df.columns):
     ax.set_title("Número de sobrevivientes por género")
 
     plt.tight_layout()
-    plt.show()
