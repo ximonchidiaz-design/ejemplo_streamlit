@@ -49,15 +49,6 @@ st.pyplot(fig)
 st.write("""
 ## Muestra de datos cargados
 """)
-# Graficamos una tabla
-st.table(df.head())
-
-st.title("Análisis de supervivencia del Titanic por género")
-
-archivo = st.file_uploader("database_titanic.csv", type=["csv"])
-
-df = pd.read_csv("data/titanic.csv")
-
 st.title("🚢 Supervivientes del Titanic por Género")
 st.markdown("---")
 
