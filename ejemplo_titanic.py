@@ -51,7 +51,7 @@ st.write("""
 """)
 st.table(df.head())
 
-st.title("🚢 Supervivientes del Titanic por Género (Simple)")
+st.title("🚢 Supervivientes del Titanic por Género")
 st.markdown("---")
 
 # Cargar los datos
