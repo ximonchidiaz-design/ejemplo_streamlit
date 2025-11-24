@@ -49,6 +49,8 @@ st.pyplot(fig)
 st.write("""
 ## Muestra de datos cargados
 """)
+st.table(df.head())
+
 st.title("🚢 Supervivientes del Titanic por Género")
 st.markdown("---")
 
